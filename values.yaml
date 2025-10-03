@@ -1,0 +1,17 @@
+controller:
+  admin:
+    user: admin
+    password: admin123
+
+  serviceType: ClusterIP
+
+  persistence:
+    enabled: true
+    size: 8Gi
+
+  installPlugins:
+    - kubernetes
+    - workflow-aggregator
+    - git
+    - github
+    - matrix-auth
