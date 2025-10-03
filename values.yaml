@@ -1,4 +1,12 @@
 controller:
+  image:
+    repository: jenkins/jenkins
+    tag: lts-jdk17
+  
+  # Use root user to allow Docker access
+  runAsUser: 0
+  fsGroup: 0
+  
   admin:
     user: admin
     password: admin123
@@ -15,3 +23,17 @@ controller:
     - git
     - github
     - matrix-auth
+
+  additionalVolumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+        
+  additionalVolumeMounts:
+    - name: docker-sock
+      mountPath: /var/run/docker.sock
+      
+  # Install Docker CLI on startup
+  initContainerEnv:
+    - name: INSTALL_DOCKER
+      value: "true"

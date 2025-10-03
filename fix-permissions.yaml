@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fix-docker-socket
+  namespace: jenkins
+spec:
+  hostNetwork: true
+  containers:
+    - name: fix
+      image: alpine
+      command: ['sh', '-c', 'chmod 666 /var/run/docker.sock && sleep infinity']
+      securityContext:
+        privileged: true
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "32Mi"
+        limits:
+          cpu: "100m"
+          memory: "128Mi"
+      volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+  volumes:
+  - name: docker-sock
+    hostPath:
+      path: /var/run/docker.sock
